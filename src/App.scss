@@ -1,0 +1,46 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  margin: 32px auto;
+  display: flex;
+  width: 80%;
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      margin: 0 4px;
+    }
+  }
+
+  .left-section {
+    flex: 1;
+
+    h1 {
+      font-size: 24px;
+      font-weight: 100;
+      margin: 8px 4px;
+      text-align: center;
+    }
+  }
+
+  .right-section {
+    flex: 1;
+    padding: 0 16px;
+
+    textarea {
+      border: 1px solid #343434;
+      border-radius: 4px;
+      font-size: 16px;
+      height: calc(100% - 50px);
+      padding: 16px 8px;
+      outline: none;
+      width: 100%;
+    }
+  }
+}
