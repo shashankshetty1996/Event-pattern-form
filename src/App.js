@@ -3,10 +3,15 @@ import React, { useState, useEffect, useRef } from "react";
 import { Forms, Settings } from "./container";
 import { Header } from "./components";
 
+import { AppContext } from "./utils/Context";
 import { getLocalStore } from "./utils/localStorage";
 
 import "./App.scss";
-import { AppContext } from "./utils/Context";
+
+const options = [
+  { label: "input", value: "input" },
+  { label: "Paragraph", value: "textarea" },
+];
 
 function App() {
   const [input, setInput] = useState({});
@@ -17,20 +22,27 @@ function App() {
 
   // Fetch from local storage
   useEffect(() => {
-    const configuration = getLocalStore() || { input: [] };
+    const configuration = getLocalStore() || { input: {} };
     setInput(() => {
-      const res = {};
-      configuration.input.forEach((label) => (res[label] = ""));
+      const res = { ...configuration.input };
+      Object.keys((item) => (res[item]["value"] = ""));
       return res;
     });
   }, []);
 
   const inputChangeHandler = (value, name) =>
-    setInput({ ...input, [name]: value });
+    setInput((prevInput) => {
+      return {
+        ...prevInput,
+        [name]: { ...prevInput[name], value },
+      };
+    });
 
   const resetForm = () => {
     const updatedInput = {};
-    Object.keys(input).forEach((label) => (updatedInput[label] = ""));
+    Object.keys(input).forEach((label) => {
+      updatedInput[label] = { ...input[label], value: "" };
+    });
     setInput(updatedInput);
   };
 
@@ -40,7 +52,7 @@ function App() {
       const inputValue = input[label];
       if (inputValue !== "") {
         text = `${text}
-*${label}* ${input[label]}`;
+*${label}* ${input[label]["value"]}`;
       }
     });
     setFinalText(text.trimStart());
@@ -67,6 +79,7 @@ function App() {
   return (
     <AppContext.Provider
       value={{
+        options,
         input,
         finalText,
         setInput,

@@ -1,7 +1,7 @@
 import React, { useContext, forwardRef } from "react";
 import { AppContext } from "../../utils/Context";
 
-import { Button, Input } from "../../components";
+import { Button, Input, Textarea } from "../../components";
 
 function Forms(props, ref) {
   const {
@@ -21,11 +21,22 @@ function Forms(props, ref) {
       <div className="left-section">
         <h1>Input Form</h1>
         {Object.keys(input).map((label, index) => {
+          const { type, value } = input[label];
+          if (type === "input") {
+            return (
+              <Input
+                key={index}
+                name={label}
+                value={value}
+                onChange={inputChangeHandler}
+              />
+            );
+          }
           return (
-            <Input
+            <Textarea
               key={index}
               name={label}
-              value={input[label]}
+              value={value}
               onChange={inputChangeHandler}
             />
           );

@@ -2,15 +2,16 @@ import React, { useState, useContext } from "react";
 import { unstable_batchedUpdates } from "react-dom";
 
 import { AppContext } from "../../utils/Context";
-import { Button, Input } from "../../components";
+import { Button, Input, Select } from "../../components";
 
 import { getLocalStore, setLocalStore } from "../../utils/localStorage";
 
 import "./Settings.scss";
 
 export default function Settings() {
-  const { input, setInput } = useContext(AppContext);
+  const { input, setInput, options } = useContext(AppContext);
   const [newLabel, setNewLabel] = useState("");
+  const [type, setType] = useState(options[0].value);
 
   const addNewLabel = () => {
     if (newLabel !== "") {
@@ -18,16 +19,16 @@ export default function Settings() {
         return alert(`${newLabel} already exist`);
       }
       unstable_batchedUpdates(() => {
-        setInput({ ...input, [newLabel]: "" });
+        setInput({ ...input, [newLabel]: { value: "", type } });
         setNewLabel("");
       });
 
       const config = getLocalStore();
       if (config) {
-        config.input.push(newLabel);
+        config.input[newLabel] = { type };
         setLocalStore(config);
       } else {
-        setLocalStore({ input: [newLabel] });
+        setLocalStore({ input: { [newLabel]: { type } } });
       }
     }
   };
@@ -38,8 +39,7 @@ export default function Settings() {
     setInput(updateInput);
 
     const config = getLocalStore();
-    const updatedList = config.input.filter((item) => item !== label);
-    config.input = updatedList;
+    delete config.input[label];
     setLocalStore(config);
   };
 
@@ -53,6 +53,11 @@ export default function Settings() {
         ))}
       </ul>
       <div className="inline-form">
+        <Select
+          options={options}
+          selectedValue={type}
+          onChange={(option) => setType(option.value)}
+        />
         <Input
           name="Add New label"
           value={newLabel}

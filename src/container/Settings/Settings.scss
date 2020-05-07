@@ -27,7 +27,11 @@
 
   .inline-form {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+
+    .select {
+      transform: translateY(8px);
+    }
 
     .input {
       width: 100%;
@@ -39,7 +43,7 @@
       padding: 4px;
       position: relative;
       width: 100px;
-      top: -4px;
+      transform: translateY(25%);
     }
   }
 }
