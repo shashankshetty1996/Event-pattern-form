@@ -39,10 +39,11 @@ function App() {
     Object.keys(input).forEach((label) => {
       const inputValue = input[label];
       if (inputValue !== "") {
-        text += `*${label}* ${input[label]} | `;
+        text = `${text}
+*${label}* ${input[label]}`;
       }
     });
-    setFinalText(text);
+    setFinalText(text.trimStart());
   };
 
   const updateFileText = ($event) => setFinalText($event.target.value);
