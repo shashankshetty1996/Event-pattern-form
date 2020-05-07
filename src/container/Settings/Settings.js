@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { unstable_batchedUpdates } from "react-dom";
 
+import { AppContext } from "../../utils/Context";
 import { Button, Input } from "../../components";
 
 import { getLocalStore, setLocalStore } from "../../utils/localStorage";
 
 import "./Settings.scss";
 
-export default function Settings(props) {
-  const { input, setInput } = props;
+export default function Settings() {
+  const { input, setInput } = useContext(AppContext);
   const [newLabel, setNewLabel] = useState("");
 
   const addNewLabel = () => {

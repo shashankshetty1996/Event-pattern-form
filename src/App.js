@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { Settings } from "./container";
-import { Button, Header, Input } from "./components";
+import { Forms, Settings } from "./container";
+import { Header } from "./components";
 
 import { getLocalStore } from "./utils/localStorage";
 
 import "./App.scss";
+import { AppContext } from "./utils/Context";
 
 function App() {
   const [input, setInput] = useState({});
   const [finalText, setFinalText] = useState("");
-  const [showSettings, setShowSettings] = useState(true);
+  const [showSettings, setShowSettings] = useState(false);
 
   const textAreaRef = useRef(null);
 
@@ -52,41 +53,29 @@ function App() {
     $event.target.focus();
   };
 
+  const toggleSettings = () => setShowSettings((c) => !c);
+
   return (
-    <div className="App">
-      <Header onSettingsClicked={() => setShowSettings((c) => !c)} />
-      {showSettings && <Settings input={input} setInput={setInput} />}
-      <div className="container">
-        <div className="left-section">
-          <h1>Input Form</h1>
-          {Object.keys(input).map((label, index) => {
-            return (
-              <Input
-                key={index}
-                name={label}
-                value={input[label]}
-                onChange={inputChangeHandler}
-              />
-            );
-          })}
-          <div className="button-group">
-            <Button onClick={resetForm}>Reset</Button>
-            <Button onClick={submitForm}>Submit</Button>
-          </div>
-        </div>
-        <div className="right-section">
-          <textarea
-            ref={textAreaRef}
-            value={finalText}
-            onChange={updateFileText}
-          ></textarea>
-          <div className="button-group">
-            <Button onClick={() => setFinalText("")}>Clear</Button>
-            <Button onClick={copyToClipboard}>Copy to Clipboard</Button>
-          </div>
-        </div>
+    <AppContext.Provider
+      value={{
+        input,
+        finalText,
+        setInput,
+        inputChangeHandler,
+        resetForm,
+        submitForm,
+        updateFileText,
+        setFinalText,
+        copyToClipboard,
+        toggleSettings,
+      }}
+    >
+      <div className="App">
+        <Header />
+        {showSettings && <Settings />}
+        <Forms ref={textAreaRef} />
       </div>
-    </div>
+    </AppContext.Provider>
   );
 }
 
