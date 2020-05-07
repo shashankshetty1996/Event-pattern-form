@@ -54,6 +54,14 @@ function App() {
     $event.target.focus();
   };
 
+  const addNoFormat = () => {
+    const text = `${finalText}
+<noformat>
+
+<noformat>`;
+    setFinalText(text.trimStart());
+  };
+
   const toggleSettings = () => setShowSettings((c) => !c);
 
   return (
@@ -68,6 +76,7 @@ function App() {
         updateFileText,
         setFinalText,
         copyToClipboard,
+        addNoFormat,
         toggleSettings,
       }}
     >

@@ -13,6 +13,7 @@ function Forms(props, ref) {
     updateFileText,
     setFinalText,
     copyToClipboard,
+    addNoFormat,
   } = useContext(AppContext);
 
   return (
@@ -42,6 +43,7 @@ function Forms(props, ref) {
         ></textarea>
         <div className="button-group">
           <Button onClick={() => setFinalText("")}>Clear</Button>
+          <Button onClick={addNoFormat}>Add noformat</Button>
           <Button onClick={copyToClipboard}>Copy to Clipboard</Button>
         </div>
       </div>
