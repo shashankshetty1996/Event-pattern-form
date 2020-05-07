@@ -16,35 +16,46 @@ function Forms(props, ref) {
     addNoFormat,
   } = useContext(AppContext);
 
+  const inputSubmit = ($event) => {
+    $event.preventDefault();
+    submitForm();
+  };
+
   return (
     <div className="container form">
       <div className="left-section">
-        <h1>Input Form</h1>
-        {Object.keys(input).map((label, index) => {
-          const { type, value } = input[label];
-          if (type === "input") {
+        <form onSubmit={inputSubmit}>
+          <h1>Input Form</h1>
+          {Object.keys(input).map((label, index) => {
+            const { type, value } = input[label];
+            if (type === "input") {
+              return (
+                <Input
+                  key={index}
+                  name={label}
+                  value={value}
+                  onChange={inputChangeHandler}
+                />
+              );
+            }
             return (
-              <Input
+              <Textarea
                 key={index}
                 name={label}
                 value={value}
                 onChange={inputChangeHandler}
               />
             );
-          }
-          return (
-            <Textarea
-              key={index}
-              name={label}
-              value={value}
-              onChange={inputChangeHandler}
-            />
-          );
-        })}
-        <div className="button-group">
-          <Button onClick={resetForm}>Reset</Button>
-          <Button onClick={submitForm}>Submit</Button>
-        </div>
+          })}
+          <div className="button-group">
+            <Button type="reset" onClick={resetForm}>
+              Reset
+            </Button>
+            <Button type="submit" onClick={submitForm}>
+              Submit
+            </Button>
+          </div>
+        </form>
       </div>
       <div className="right-section">
         <textarea
@@ -53,9 +64,13 @@ function Forms(props, ref) {
           onChange={updateFileText}
         ></textarea>
         <div className="button-group">
-          <Button onClick={() => setFinalText("")}>Clear</Button>
+          <Button type="reset" onClick={() => setFinalText("")}>
+            Clear
+          </Button>
           <Button onClick={addNoFormat}>Add noformat</Button>
-          <Button onClick={copyToClipboard}>Copy to Clipboard</Button>
+          <Button type="submit" onClick={copyToClipboard}>
+            Copy to Clipboard
+          </Button>
         </div>
       </div>
     </div>

@@ -13,6 +13,11 @@ export default function Settings() {
   const [newLabel, setNewLabel] = useState("");
   const [type, setType] = useState(options[0].value);
 
+  const settingsSubmit = ($event) => {
+    $event.preventDefault();
+    addNewLabel();
+  };
+
   const addNewLabel = () => {
     if (newLabel !== "") {
       if (input[newLabel] !== undefined) {
@@ -53,17 +58,21 @@ export default function Settings() {
         ))}
       </ul>
       <div className="inline-form">
-        <Select
-          options={options}
-          selectedValue={type}
-          onChange={(option) => setType(option.value)}
-        />
-        <Input
-          name="Add New label"
-          value={newLabel}
-          onChange={(value) => setNewLabel(value)}
-        />
-        <Button onClick={addNewLabel}>Add new label</Button>
+        <form onSubmit={settingsSubmit}>
+          <Select
+            options={options}
+            selectedValue={type}
+            onChange={(option) => setType(option.value)}
+          />
+          <Input
+            name="Add New label"
+            value={newLabel}
+            onChange={(value) => setNewLabel(value)}
+          />
+          <Button type="submit" onClick={addNewLabel}>
+            Add new label
+          </Button>
+        </form>
       </div>
     </div>
   );
