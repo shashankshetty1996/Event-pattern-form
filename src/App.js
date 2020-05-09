@@ -69,10 +69,21 @@ function App() {
   };
 
   const addNoFormat = () => {
-    const text = `${finalText}
+    const { selectionStart, selectionEnd } = textAreaRef.current;
+    let text = "";
+    if (selectionStart === selectionEnd) {
+      text = `${finalText}
 {noformat}
 
 {noformat}`;
+    } else {
+      // Selected
+      text = `${finalText.slice(0, selectionStart)}
+{noformat}
+${finalText.slice(selectionStart, selectionEnd)}
+{noformat}
+${finalText.slice(selectionEnd)}`;
+    }
     setFinalText(text.trimStart());
   };
 
