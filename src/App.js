@@ -6,6 +6,8 @@ import { Header } from "./components";
 import { AppContext } from "./utils/Context";
 import { getLocalStore } from "./utils/localStorage";
 
+import CONSTANTS from "./Constants";
+
 import "./App.scss";
 
 const options = [
@@ -22,7 +24,7 @@ function App() {
 
   // Fetch from local storage
   useEffect(() => {
-    const configuration = getLocalStore() || { input: {} };
+    const configuration = getLocalStore() || CONSTANTS.FORM_DETAILS;
     setInput(() => {
       const res = { ...configuration.input };
       Object.keys((item) => (res[item]["value"] = ""));
@@ -68,9 +70,9 @@ function App() {
 
   const addNoFormat = () => {
     const text = `${finalText}
-<noformat>
+{noformat}
 
-<noformat>`;
+{noformat}`;
     setFinalText(text.trimStart());
   };
 

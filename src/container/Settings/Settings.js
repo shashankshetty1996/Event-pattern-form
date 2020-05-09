@@ -11,6 +11,7 @@ import "./Settings.scss";
 export default function Settings() {
   const { input, setInput, options } = useContext(AppContext);
   const [newLabel, setNewLabel] = useState("");
+  const [hint, setHint] = useState("");
   const [type, setType] = useState(options[0].value);
 
   const settingsSubmit = ($event) => {
@@ -23,18 +24,22 @@ export default function Settings() {
       if (input[newLabel] !== undefined) {
         return alert(`${newLabel} already exist`);
       }
+      const newOption = { value: "", type, hint };
       unstable_batchedUpdates(() => {
-        setInput({ ...input, [newLabel]: { value: "", type } });
+        setInput({
+          ...input,
+          [newLabel]: JSON.parse(JSON.stringify(newOption)),
+        });
         setNewLabel("");
       });
 
-      const config = getLocalStore();
-      if (config) {
-        config.input[newLabel] = { type };
-        setLocalStore(config);
+      const config = getLocalStore() || {};
+      if (Object.keys(config).length !== 0) {
+        config.input[newLabel] = JSON.parse(JSON.stringify(newOption));
       } else {
-        setLocalStore({ input: { [newLabel]: { type } } });
+        config.input = { [newLabel]: JSON.parse(JSON.stringify(newOption)) };
       }
+      setLocalStore(config);
     }
   };
 
@@ -57,23 +62,28 @@ export default function Settings() {
           </li>
         ))}
       </ul>
-      <div className="inline-form">
-        <form onSubmit={settingsSubmit}>
-          <Select
-            options={options}
-            selectedValue={type}
-            onChange={(option) => setType(option.value)}
-          />
-          <Input
-            name="Add New label"
-            value={newLabel}
-            onChange={(value) => setNewLabel(value)}
-          />
-          <Button type="submit" onClick={addNewLabel}>
-            Add new label
-          </Button>
-        </form>
-      </div>
+      <form className="inline-form" onSubmit={settingsSubmit}>
+        <Select
+          options={options}
+          selectedValue={type}
+          onChange={(option) => setType(option.value)}
+        />
+        <Input
+          name="Add New label*"
+          value={newLabel}
+          placeholder="Enter new input label"
+          onChange={(value) => setNewLabel(value)}
+        />
+        <Input
+          name="Hint"
+          value={hint}
+          placeholder="Add hint for this input"
+          onChange={(value) => setHint(value)}
+        />
+        <Button type="submit" onClick={addNewLabel}>
+          Add new label
+        </Button>
+      </form>
     </div>
   );
 }

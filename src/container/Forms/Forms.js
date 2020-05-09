@@ -27,13 +27,14 @@ function Forms(props, ref) {
         <form onSubmit={inputSubmit}>
           <h1>Input Form</h1>
           {Object.keys(input).map((label, index) => {
-            const { type, value } = input[label];
+            const { type, value, hint = "" } = input[label];
             if (type === "input") {
               return (
                 <Input
                   key={index}
                   name={label}
                   value={value}
+                  hint={hint}
                   onChange={inputChangeHandler}
                 />
               );
@@ -43,6 +44,7 @@ function Forms(props, ref) {
                 key={index}
                 name={label}
                 value={value}
+                hint={hint}
                 onChange={inputChangeHandler}
               />
             );

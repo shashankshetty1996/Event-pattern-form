@@ -31,6 +31,7 @@
 
     .select {
       transform: translateY(8px);
+      width: 200px;
     }
 
     .input {
@@ -42,7 +43,7 @@
       height: 35px;
       padding: 4px;
       position: relative;
-      width: 100px;
+      width: 200px;
       transform: translateY(25%);
     }
   }
